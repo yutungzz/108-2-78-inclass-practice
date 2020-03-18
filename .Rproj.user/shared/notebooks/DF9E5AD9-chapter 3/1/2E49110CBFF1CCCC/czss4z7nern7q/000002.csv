@@ -1,0 +1,9 @@
+"0","library(readr)"
+"0","hypothesisData <- read_csv(""https://www.dropbox.com/s/0etoflih5eqc0bc/hypothesisData.csv?dl=1"")"
+"2","Parsed with column specification:
+cols(
+  ANS133 = [31mcol_character()[39m
+)
+"
+"0","View(hypothesisData)"
+"0",""

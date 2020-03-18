@@ -1,0 +1,14 @@
+"0","library(readr)"
+"0","exDataPost80s <- read_csv(""https://www.dropbox.com/s/rc6t40gsxduysz6/exDataPost80s.csv?dl=1"")"
+"2","Parsed with column specification:
+cols(
+  ´Á¶¡ = [34mcol_date(format = """")[39m,
+  ¹ô§O = [31mcol_character()[39m,
+  ¶×²v = [32mcol_double()[39m,
+  ¶S­È²v = [32mcol_double()[39m,
+  ¦~¥÷ = [32mcol_double()[39m,
+  ®É´Á = [31mcol_character()[39m
+)
+"
+"0","View(exDataPost80s)"
+"0",""
