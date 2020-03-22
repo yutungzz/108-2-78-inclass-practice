@@ -26,5 +26,9 @@ plot(pressure)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 
+```{r}
+"我的年紀"<- 20
+my_age<- "我的年紀"
+```
 
 
