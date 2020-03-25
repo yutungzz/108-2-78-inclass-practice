@@ -72,3 +72,16 @@ class(stringInteger) # 無法進行數值運算
 stringInteger+2
 ```
 
+## exercise
+
+```{r}
+studentId <- c(410773002, 410773015)
+class(studentId)
+as.character(studentId)
+```
+
+```{r}
+studentId <- c(410773002, 410773015)
+studentId<- as.character(studentId)
+```
+
