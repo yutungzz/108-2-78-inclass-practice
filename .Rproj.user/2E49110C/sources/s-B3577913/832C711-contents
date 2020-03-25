@@ -58,3 +58,17 @@ class(majors10_factor)
 levels(majors10_factor)
 ```
 
+## class/type convertion
+
+```{r}
+stringInteger <- c("1","2","-11")
+class(stringInteger) # 無法進行數值運算
+as.numeric(stringInteger)+2
+```
+
+```{r}
+stringInteger <- c(1,2,-11)
+class(stringInteger) # 無法進行數值運算
+stringInteger+2
+```
+
