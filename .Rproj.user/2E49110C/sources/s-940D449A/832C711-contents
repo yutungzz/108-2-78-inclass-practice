@@ -120,3 +120,11 @@ with_tz(tpeDateTime, tzone="UTC")
 with_tz(pgDateTime, tzone="UTC")
 ```
 
+```{r}
+studentTime<-c(
+  ymd_hms("2020-03-11T07:20:21Z"),
+  ymd_hms("2020-03-11 16:06:45",tz="Asia/Taipei"),
+  ymd_hms("2020-03-11 16:06:45",tz="Asia/Taipei"))
+studentTime
+```
+
