@@ -24,3 +24,20 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+library(lubridate)
+```
+
+台北 2020-03-18 13:52:40
+```{r}
+tpeDateTime <- ymd_hms("2020-03-18 13:52:40",tz="Asia/Taipei")
+```
+
+
+葡萄牙 Mar.18, 2020, 05:52:40
+```{r}
+pgDateTime <- mdy_hms("Mar.18, 2020, 05:52:40",tz="Europe/Lisbon")
+```
+
