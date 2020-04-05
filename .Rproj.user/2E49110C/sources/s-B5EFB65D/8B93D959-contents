@@ -106,3 +106,28 @@ print(`小明108學年課表B`)
 print(`小明108學年課表C`)
 ```
 
+物件值可以取名。
+```{r}
+`小明108學年課表D` <- list(
+  `上學期`=list(
+    semester=c("108-1"), # 可只寫 "108-1"
+    courses=c("高級會計學","高等統計學")
+       ),
+  `下學期`=list(
+    semester=c("108-2"),
+    courses=c("食在拉丁美洲")
+  )
+)
+print(`小明108學年課表D`)
+```
+
+## Github Commit
+
+```{r}
+commit <- lisst(
+  author=
+  commiter=
+  message=
+)
+```
+
