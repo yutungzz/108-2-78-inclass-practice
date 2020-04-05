@@ -108,6 +108,145 @@ print(`小明108學年課表C`)
 
 物件值可以取名。
 ```{r}
+`小明108學年課表D` <- list(
+  `上學期`=list(
+    semester=c("108-1"), # 可只寫 "108-1"
+    courses=c("高級會計學","高等統計學")
+       ),
+  `下學期`=list(
+    semester=c("108-2"),
+    courses=c("食在拉丁美洲")
+  )
+)
+print(`小明108學年課表D`)
+```
 
+## Github Commit
+
+```{r}
+commit <- list(
+  author = list(
+    name="Martin老師",
+    email="mtlin@gm.ntpu.edu.tw",
+    time=ymd_hms("2020-03-25T07:17:40Z")),
+  commiter = list(
+    name='emilyluckey', 
+    email="emily007@gmail.com", 
+    time=ymd_hms("2020-03-26T08:18:40Z")
+  ),
+  message = c("update")
+  )
+print(commit)
+#   commiter=
+#   message=
+# )
+```
+
+```{r}
+browseURL("https://api.github.com/repos/tpemartin/108-2-56-inclass-practice/commits") 
+```
+
+```{r}
+library(jsonlite) # 不少同學這行會有Error，還記得如何排除嗎？
+toJSON(commit)
+```
+
+## 3.7
+
+```{r}
+save(commit,listExample,file"today.Rda")
+```
+
+```{r}
+# 108-1 
+course1_1081 <- 
+  list(
+    name="個體經濟學",
+    teacher="Alice",
+    grade=85
+  )
+course2_1081 <-
+  list(
+    name="總體經濟學",
+    teacher="Mark",
+    grade=78
+  )
+`108-1修課記錄` <- 
+  list(
+    course1_1081,
+    course2_1081
+  )
+
+# 108-2
+course1_1082 <- 
+  list(
+    name="作業研究",
+    teacher="Jason",
+    grade=90
+  )
+`108-2修課記錄` <- 
+  list(
+    course1_1082
+  )
+
+# 整合兩學期
+`每學期修課記錄` <- list(
+  `108-1`=`108-1修課記錄`,
+  `108-2`=`108-2修課記錄`
+)
+
+# 完成記錄
+`小明的修課記錄` <- 
+  list(
+    name="小明",
+    semesters=`每學期修課記錄`
+  )
+```
+
+```{r}
+`小明的學習紀錄` <- list(
+  name="小明",
+  list(
+    teacher="Alice老師" ,
+    name="個體經濟學" ,
+    grade=85 
+  ),
+   list(
+    teacher="Mark老師" ,
+    name="總體經濟學" ,
+    grade= 73
+  ),
+  list(
+    teacher="Jason老師" ,
+    name="作業研究" ,
+    grade=90
+  )
+  
+)
+
+`小明的學習紀錄`
+```
+
+今（“2020-03-31”）明（“2020-04-01”）「台北市」氣溫最高25度，最低18度；「新北市」氣溫最高24度，最低15度。
+
+```{r}
+library(lubridate)
+`天氣預報` <- list(
+  TaipeiCity = list(
+   city="Taipei",
+   today=ymd("2020-03-31"),
+   tommorow=ymd("2020-04-01"),
+   highest=25,
+   l0west=18
+  ),
+  NewTaipeiCity = list(
+   city="NewTaipe",
+   today=ymd("2020-03-31"),
+   tommorow=ymd("2020-04-01"),
+   highest=24,
+   l0west=15
+  )
+)
+`天氣預報`
 ```
 

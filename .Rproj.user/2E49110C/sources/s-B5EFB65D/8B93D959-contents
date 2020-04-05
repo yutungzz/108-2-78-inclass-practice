@@ -157,3 +157,96 @@ toJSON(commit)
 save(commit,listExample,file"today.Rda")
 ```
 
+```{r}
+# 108-1 
+course1_1081 <- 
+  list(
+    name="個體經濟學",
+    teacher="Alice",
+    grade=85
+  )
+course2_1081 <-
+  list(
+    name="總體經濟學",
+    teacher="Mark",
+    grade=78
+  )
+`108-1修課記錄` <- 
+  list(
+    course1_1081,
+    course2_1081
+  )
+
+# 108-2
+course1_1082 <- 
+  list(
+    name="作業研究",
+    teacher="Jason",
+    grade=90
+  )
+`108-2修課記錄` <- 
+  list(
+    course1_1082
+  )
+
+# 整合兩學期
+`每學期修課記錄` <- list(
+  `108-1`=`108-1修課記錄`,
+  `108-2`=`108-2修課記錄`
+)
+
+# 完成記錄
+`小明的修課記錄` <- 
+  list(
+    name="小明",
+    semesters=`每學期修課記錄`
+  )
+```
+
+```{r}
+`小明的學習紀錄` <- list(
+  name="小明",
+  list(
+    teacher="Alice老師" ,
+    name="個體經濟學" ,
+    grade=85 
+  ),
+   list(
+    teacher="Mark老師" ,
+    name="總體經濟學" ,
+    grade= 73
+  ),
+  list(
+    teacher="Jason老師" ,
+    name="作業研究" ,
+    grade=90
+  )
+  
+)
+
+`小明的學習紀錄`
+```
+
+今（“2020-03-31”）明（“2020-04-01”）「台北市」氣溫最高25度，最低18度；「新北市」氣溫最高24度，最低15度。
+
+```{r}
+library(lubridate)
+`天氣預報` <- list(
+  TaipeiCity = list(
+   city="Taipei",
+   today=ymd("2020-03-31"),
+   tommorow=ymd("2020-04-01"),
+   highest=25,
+   l0west=18
+  ),
+  NewTaipeiCity = list(
+   city="NewTaipe",
+   today=ymd("2020-03-31"),
+   tommorow=ymd("2020-04-01"),
+   highest=24,
+   l0west=15
+  )
+)
+`天氣預報`
+```
+
