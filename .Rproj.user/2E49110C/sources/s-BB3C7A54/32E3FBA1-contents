@@ -158,9 +158,35 @@ str(taipeiNightMarkets[c(T,F,F,F,T,F,F,F,F,T,F,F,F,T)],max.level=1)
 ```
 
 ```{r}
-selectedMarkets <- rep(F,14)  ## repeat
+selectedMarkets <- rep(F,14)  ## repeat F by 14 times
 print(selectedMarkets)
 selectedMarkets[c(1,5,10,14)] <- TRUE  ## replace
 print(selectedMarkets)
+```
+
+```{r}
+str(taipeiNightMarkets[selectedMarkets],max.level = 1)
+```
+
+```{r}
+str(listExample,max.level = 3)
+```
+
+```{r}
+get1 <- listExample[["學期"]]
+get2 <- listExample["學期"]
+```
+
+```{r}
+str(get1,max.level = 1)
+```
+
+```{r}
+str(get2,max.level = 1)
+str(get2,max.level = 2)
+```
+
+```{r}
+str(listExample,max.level = 3)
 ```
 

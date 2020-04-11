@@ -148,5 +148,19 @@ str(listExample[c(F,T)]) # 不要，要
 str(listExample[c(T,T)]) # 要，要
 ```
 
+```{r}
+names(taipeiNightMarkets)
 
+c(T,F,F,F,T,F,F,F,F,T,F,F,F,T) ->selectedMarkets
+taipeiNightMarkets[selectedMarkets]
+
+str(taipeiNightMarkets[c(T,F,F,F,T,F,F,F,F,T,F,F,F,T)],max.level=1)
+```
+
+```{r}
+selectedMarkets <- rep(F,14)  ## repeat F by 14 times
+print(selectedMarkets)
+selectedMarkets[c(1,5,10,14)] <- TRUE  ## replace
+print(selectedMarkets)
+```
 
