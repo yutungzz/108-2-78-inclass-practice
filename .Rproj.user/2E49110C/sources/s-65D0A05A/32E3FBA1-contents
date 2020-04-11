@@ -47,3 +47,59 @@ listExample[[1]]
 listExample[[2]]
 ```
 
+```{r}
+library(jsonlite)
+fromJSON("https://data.tainan.gov.tw/dataset/4cd9345a-04bf-4328-a97d-314ff78b4763/resource/afc025fc-1ef4-447c-b785-a680391d0ca1/download/tnsport2.json", simplifyDataFrame = F) -> tainanSportsMap
+
+length(tainanSportsMap)
+```
+```{r}
+tainanSportsMap[[1]]
+tainanSportsMap[[1076]]
+```
+
+## 用名字選
+
+```{r}
+# 有多少名字可選：
+names(listExample)
+```
+
+```{r}
+listExample[["student"]]
+listExample$student
+
+listExample[["學期"]] # 小心不是反頓點喔。
+listExample$`學期`
+```
+
+```{r}
+str(listExample)
+```
+
+```{r}
+str(listExample$`學期`)
+```
+
+```{r}
+fromJSON("http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000157-002",
+         simplifyDataFrame = F) -> newTaipeiCityVaccine
+```
+
+
+```{r}
+str(newTaipeiCityVaccine)
+length(newTaipeiCityVaccine)
+names(newTaipeiCityVaccine)
+```
+
+```{r}
+str(newTaipeiCityVaccine[[1]],max.level = 1)
+str(newTaipeiCityVaccine$success,max.level = 1)
+str(newTaipeiCityVaccine[["success"]],max.level = 1)
+
+str(newTaipeiCityVaccine[[2]],max.level = 1)
+str(newTaipeiCityVaccine$result,max.level = 1)
+str(newTaipeiCityVaccine[["result"]],max.level = 1)
+```
+
