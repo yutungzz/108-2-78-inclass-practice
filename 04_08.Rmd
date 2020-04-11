@@ -58,3 +58,95 @@ tainanSportsMap[[1]]
 tainanSportsMap[[1076]]
 ```
 
+## 用名字選
+
+```{r}
+# 有多少名字可選：
+names(listExample)
+```
+
+```{r}
+listExample[["student"]]
+listExample$student
+
+listExample[["學期"]] # 小心不是反頓點喔。
+listExample$`學期`
+```
+
+```{r}
+str(listExample)
+```
+
+```{r}
+str(listExample$`學期`)
+```
+
+```{r}
+fromJSON("http://data.ntpc.gov.tw/api/v1/rest/datastore/382000000A-000157-002",
+         simplifyDataFrame = F) -> newTaipeiCityVaccine
+```
+
+
+```{r}
+str(newTaipeiCityVaccine)
+length(newTaipeiCityVaccine)
+names(newTaipeiCityVaccine)
+```
+
+```{r}
+str(newTaipeiCityVaccine[[1]],max.level = 1)
+str(newTaipeiCityVaccine$success,max.level = 1)
+str(newTaipeiCityVaccine[["success"]],max.level = 1)
+
+str(newTaipeiCityVaccine[[2]],max.level = 1)
+str(newTaipeiCityVaccine$result,max.level = 1)
+str(newTaipeiCityVaccine[["result"]],max.level = 1)
+```
+
+## 選多個元素
+
+```{r}
+vectorExample
+vectorExample[c(1,3)]
+vectorExample[c(3,2,1)] # 產生重新排列效果
+```
+
+```{r}
+# 顯示到第一層
+str(listExample, max.level=1)
+
+listExample[c(1,2)]
+
+str(listExample[c(1,2)],max.level = 1)
+str(listExample[c(2,1)],max.level = 1)
+```
+
+```{r}
+# 顯示到第一層
+str(listExample, max.level=1)
+
+listExample[c("學期")]
+listExample[c("student","學期")]
+```
+
+```{r}
+fromJSON("https://www.dropbox.com/s/qnm9bnz7vccrvcz/taipeiNightMarkets.json?dl=1", simplifyDataFrame = F) -> taipeiNightMarkets
+
+str(taipeiNightMarkets[c(1,3)],max.level = 1)
+str(taipeiNightMarkets[["寧夏觀光夜市"]],max.level = 1)
+taipeiNightMarkets[c(1,3)]
+
+```
+
+```{r}
+vectorExample
+vectorExample[c(T,T,F)] # 要，要，不要
+```
+
+```{r}
+str(listExample[c(F,T)]) # 不要，要
+str(listExample[c(T,T)]) # 要，要
+```
+
+
+

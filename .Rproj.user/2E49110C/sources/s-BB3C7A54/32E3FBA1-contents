@@ -103,3 +103,64 @@ str(newTaipeiCityVaccine$result,max.level = 1)
 str(newTaipeiCityVaccine[["result"]],max.level = 1)
 ```
 
+## 選多個元素
+
+```{r}
+vectorExample
+vectorExample[c(1,3)]
+vectorExample[c(3,2,1)] # 產生重新排列效果
+```
+
+```{r}
+# 顯示到第一層
+str(listExample, max.level=1)
+
+listExample[c(1,2)]
+
+str(listExample[c(1,2)],max.level = 1)
+str(listExample[c(2,1)],max.level = 1)
+```
+
+```{r}
+# 顯示到第一層
+str(listExample, max.level=1)
+
+listExample[c("學期")]
+listExample[c("student","學期")]
+```
+
+```{r}
+fromJSON("https://www.dropbox.com/s/qnm9bnz7vccrvcz/taipeiNightMarkets.json?dl=1", simplifyDataFrame = F) -> taipeiNightMarkets
+
+str(taipeiNightMarkets[c(1,3)],max.level = 1)
+str(taipeiNightMarkets[["寧夏觀光夜市"]],max.level = 1)
+taipeiNightMarkets[c(1,3)]
+
+```
+
+```{r}
+vectorExample
+vectorExample[c(T,T,F)] # 要，要，不要
+```
+
+```{r}
+str(listExample[c(F,T)]) # 不要，要
+str(listExample[c(T,T)]) # 要，要
+```
+
+```{r}
+names(taipeiNightMarkets)
+
+c(T,F,F,F,T,F,F,F,F,T,F,F,F,T) ->selectedMarkets
+taipeiNightMarkets[selectedMarkets]
+
+str(taipeiNightMarkets[c(T,F,F,F,T,F,F,F,F,T,F,F,F,T)],max.level=1)
+```
+
+```{r}
+selectedMarkets <- rep(F,14)  ## repeat
+print(selectedMarkets)
+selectedMarkets[c(1,5,10,14)] <- TRUE  ## replace
+print(selectedMarkets)
+```
+
