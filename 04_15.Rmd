@@ -23,4 +23,261 @@ You can also embed plots, for example:
 plot(pressure)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code thatgenerated the plot.
+
+
+```{r}
+listExample <- 
+  list(
+    name="小明",
+    semesters=
+      list(
+        `108-1`=
+          list(
+            year=108,
+            semester=1,
+            courses=
+              list(
+                list(
+                  name="個體經濟學",
+                  teacher="Alice",
+                  grade=85
+                ),
+                list(
+                  name="總體經濟學",
+                  teacher="Mark",
+                  grade=78
+                )
+              )
+            ),
+        `108-2`=
+          list(
+            year=108,
+            semester=2,
+            courses=
+              list(
+                list(
+                  name="作業研究",
+                  teacher="Jason",
+                  grade=90
+                )
+              )
+            )
+      ) 
+    )
+str(listExample)
+```
+
+```{r}
+get1 <- listExample[["學期"]]
+str(get1)
+
+```
+
+```{r}
+get2 <- listExample["學期"]
+str(get2)
+```
+
+
+```{r}
+get1 <- listExample[["學期"]]
+get1$`108-1` -> get1_layer1
+get1_layer1[[1]] -> get1_layer2
+get1_layer2$teacher
+
+listExample[["學期"]]$`108-1`[[1]]$teacher
+```
+
+```{r}
+get2 <- listExample["學期"]
+get2_layer1 <- get2[[1]]
+get2_layer2 <- get2_layer1[["108-1"]]
+get2_layer3 <- get2_layer2[[1]]
+get2_layer3$teacher
+
+get2[[1]][[108-1]][[1]]$teacher
+```
+
+```{r}
+today <- list(
+  list("台北市",
+       highest_tem=c(highest_temp = 25),
+       lowest_tem=c(lowest_temp = 18)),
+  list("新北市",
+       highest_tem=c(highest_temp = 24),
+       lowest_tem=c(lowest_temp = 15)))
+tomorrow <- list(
+  list("台北市",
+       highest_tem=c(highest_temp = 25),
+       lowest_tem=c(lowest_temp = 18)),
+  list("新北市",
+       highest_tem=c(highest_temp = 24),
+       lowest_tem=c(lowest_temp = 15)))
+
+weather <- list(today,tomorrow)
+
+print(weather)
+```
+
+```{r}
+weather[[1]][[2]]$highest_tem # 今天/新北市/highest_temp
+weather[[2]][[2]]$highest_tem # 明天/新北市/highest_temp
+```
+
+```{r}
+a <- c("1","b","TRUE")
+a
+a[[2]] <- "c" # 元素存在: 替換
+a[[4]] <- "7" # 元素不存在： 增加
+a[c(5,6)] <- c("J", "K")
+a
+```
+
+```{r}
+a[[7]] <- "Johnson"
+a
+
+a <- c(a,"Mary")
+a
+```
+
+
+```{r}
+library(lubridate)
+list1 <- 
+  list(
+    list(
+      name="Jack",
+      birthday=ymd("1998-03-21"),
+      status=c(height=177, weight=80)
+    )
+  )
+
+str(list1)
+```
+
+```{r}
+# 更改日期
+list1[[1]]$birthday <- ymd("1997-03-21")
+
+# 新增資料
+list1[[2]] <- list(
+  name="Mary",
+  birthday=ymd("1998-08-24")
+)
+
+str(list1)
+```
+
+替Mary依Jack的記錄方式增加身高163，體重45。
+
+將Jack的身高改成176。
+```{r}
+list1[[1]]$status <- c(height=176, weight=80)
+list1[[2]] <- list(
+  name="Mary",
+  birthday=ymd("1998-08-24"),
+  status=c(height=163, weight=45)
+)
+str(list1)
+```
+
+```{r}
+list1[[1]][["age"]] <- 21
+list1[[2]]["age"] <- list(21)
+
+# 改變「一個」時，使用[[ ]]比較不會錯。
+str(list1)
+```
+
+```{r}
+list1[[1]][c("bloodType","registered")] <- list("AB",TRUE)
+
+str(list1)
+```
+
+```{r}
+listExample <- 
+  list(
+    student="小明",
+    `學期`=list(
+      `108-1`=list(
+        list(
+          name="個體經濟學",
+          teacher="Alice",
+          grade=85
+        )
+      ),
+      `108-2`=list(
+        list(
+          name="總體經濟學",
+          teacher="Mark",
+          grade=78
+        )
+      )
+    )
+  )
+
+str(listExample)
+```
+
+108-1新增一個“產業經濟學”。
+
+產業經濟學，同時加上教師Wen及成績88。
+```{r}
+listExample[["學期"]]$`108-1`[[2]] <- "產業經濟學"
+listExample[["學期"]]$`108-1`[[2]][c("teacher","grade")] <- 
+  list(
+    "Wen",
+    88
+    )
+
+str(listExample)
+```
+
+```{r}
+print(a)
+a[-c(1,3)]
+a[c(-2)]
+
+print(a)
+a[-c(1,3)] -> a # 要回存才算真的刪除
+```
+
+```{r}
+library(lubridate)
+list1 <- 
+  list(
+    list(
+      name="Jack",
+      birthday=ymd("1998-03-21"),
+      status=c(height=177, weight=80)
+    ),
+    list(
+      name="Mary",
+      birthday=ymd("1998-08-24"),
+      status=c(height=163, weight=45),
+      age=21,
+      bloodType="AB"
+    )
+  )
+str(list1)
+```
+
+```{r}
+list1[[1]][-c(3)] -> list1[[1]]
+list1[[2]][-c(3,5)] -> list1[[2]]
+
+str(list1)
+```
+
+```{r}
+library(jsonlite)
+fromJSON("https://data.ntpc.gov.tw/od/data/api/54DDDC93-589C-4858-9C95-18B2046CC1FC?$format=json", simplifyDataFrame = F) -> newTaipeiYouBike
+
+newTaipeiYouBike[[1]][[2]] <- NULL
+newTaipeiYouBike[[1]][-3] -> newTaipeiYouBike[[1]]
+str(newTaipeiYouBike)
+```
+
