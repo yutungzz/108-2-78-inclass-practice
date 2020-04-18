@@ -1,0 +1,26 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1586582095570.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2480021579",
+    "id" : "38B86D54",
+    "lastKnownWriteTime" : 1586584547,
+    "last_content_update" : 1586588582143,
+    "path" : "D:/My Documents/Downloads/homework1-410573105.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "164,8",
+        "last_setup_crc32" : "BB3C7A546e85358a",
+        "scrollLine" : "143"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

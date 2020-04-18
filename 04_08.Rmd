@@ -231,3 +231,5 @@ print(c)
 ##選出econOnly的names與gender。
 ##在econOnly的gender下創造出只要“F”的邏輯向量, econFemaleOnly。
 ##選出names中為“經濟學系”且“F”的姓名。
+
+
