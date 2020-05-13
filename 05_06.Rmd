@@ -291,3 +291,20 @@ print(twDate_reformat)
 lubridate::ymd(twDate_reformat)
 ```
 
+```{r}
+addresses <- c(
+  '臺中市后里區公館里尾社路385號',
+  '新竹市東區科學園路125號1樓'
+  )
+```
+
+```{r}
+str_extract(addresses,"[0-9]+(?=號)")
+```
+
+```{r}
+str_extract_all(
+  "我的名字8293叫17380小abce明",
+  "[\u4E00-\u9FFF]+")
+```
+
