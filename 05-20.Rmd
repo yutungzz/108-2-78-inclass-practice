@@ -312,8 +312,134 @@ population %>%
   factor(cities, levels=.) -> cities
 ```
 
-```{r}
 
+
+
+
+找出第8個表演的所有場次時間(time)和地點(location):
+```{r}
+jsonlite::fromJSON("https://www.dropbox.com/s/6252gbdnv9owljm/dance.json?dl=1", simplifyDataFrame = F) -> dance
 ```
+
+```{r}
+library(purrr)
+```
+
+```{r}
+dance[[8]]$showInfo[[1]]$time
+dance[[8]]$showInfo[[1]]$location
+
+map(dance[[8]]$showInfo,~.x$time) -> list_showTimes_dance8
+map(dance[[8]]$showInfo,~.x$location) -> list_locations_dance8
+
+list_showTimes_dance8
+list_locations_dance8
+```
+
+4.8.2 綜合練習
+1.
+請抓出每條路線的Id(路線代碼)、providerId(業者代碼)、providerName(業者中文名稱)、nameZh(中文名稱)。
+```{r}
+jsonlite::fromJSON("https://data.ntpc.gov.tw/api/datasets/0EE4E6BF-CEE6-4EC8-8FE1-71F544015127/json/preview", simplifyDataFrame = F) -> busRoutes
+```
+
+```{r}
+#busRoutes[[1]]$Id
+#busRoutes[[2]]$Id
+map(busRoutes,~.x$Id)
+
+#busRoutes[[1]]$providerId
+map(busRoutes,~.x$providerId)
+
+#busRoutes[[1]]$providerName
+map(busRoutes,~.x$providerName)
+
+#busRoutes[[1]]$nameZh
+map(busRoutes,~.x$nameZh)
+```
+
+2.
+一般天氣預報-今明36小時天氣預報:
+```{r}
+jsonlite::fromJSON("https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON") ->
+  weather_next36hours
+```
+
+2.1 找出有氣象預報資訊的縣市名稱（locationName欄位）
+```{r}
+weather_next36hours$cwbopendata$dataset$location$locationName
+```
+
+2.2 氣象局針對每個縣市提供了不同氣象因子在未來三個時段的預報。每個都市的氣象因子預報有那些，以第一個都市為例，它存在
+```{r}
+weather_next36hours$cwbopendata$dataset$location$weatherElement[[1]]$elementName 
+```
+請取出每個縣市有提供的氣象預報因子名稱。（個別名稱的意思要去看欄位說明文件）
+```{r}
+map(weather_next36hours$cwbopendata$dataset$location$weatherElement,~.x$elementName)
+```
+
+2.3 請抓出每縣市在第一個預告時段的
+預告開始時間
+預告結束時間
+這段時間的最高氣溫
+```{r}
+#weather_next36hours$cwbopendata$dataset$location$weatherElement[[1]]$time[[1]]$startTime
+#weather_next36hours$cwbopendata$dataset$location$weatherElement[[2]]$time[[1]]$startTime
+map(weather_next36hours$cwbopendata$dataset$location$weatherElement,~.x$time[[1]]$startTime)
+
+#weather_next36hours$cwbopendata$dataset$location$weatherElement[[1]]$time[[1]]$endTime
+map(weather_next36hours$cwbopendata$dataset$location$weatherElement,~.x$time[[1]]$endTime)
+
+#weather_next36hours$cwbopendata$dataset$location$weatherElement[[1]]$time[[1]]$parameter$parameterValue
+map(weather_next36hours$cwbopendata$dataset$location$weatherElement,~.x$time[[1]]$parameter$parameterValue)
+```
+
+5.1.6 綜合練習
+1.
+```{r}
+jsonlite::fromJSON("https://od.cdc.gov.tw/eic/Day_Confirmation_Age_County_Gender_19CoV.json") -> covid19
+
+jsonlite::fromJSON(
+  "https://www.dropbox.com/s/jckqryeh5zeat5w/regionPopulation.json?dl=1"
+) -> population
+unlist(population) -> population
+```
+下面程式碼來自4.7節示範如何依人口大小排序設資料縣市factor的levels順序。請以pipe operator改寫它，能串得越多句程式碼越好。
+```{r}
+covid19$`縣市` <- factor(covid19$`縣市`)
+
+levels(covid19$`縣市`) -> levelsInData
+population[levelsInData] -> population
+
+population <- sort(population, decreasing=T)
+population
+
+newLevels <- names(population)
+newLevels
+
+covid19$`縣市` <-
+  factor(
+    covid19$`縣市`, levels=newLevels
+  )
+
+levels(covid19$`縣市`)
+```
+
+```{r}
+factor(covid19$`縣市`)%>% 
+  levels(.)%>% 
+  population[.]%>%
+  sort(., decreasing=T)%>%
+  names(.)%>%
+  factor(covid19$`縣市`, levels=.)%>%
+  levels(.)
+```
+
+
+
+
+
+
 
 
