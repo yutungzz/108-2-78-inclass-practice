@@ -1,0 +1,88 @@
+---
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+請寫下供給函數：
+qs=0+2p
+```{r}
+supply_return <- 
+  function(p){
+    q_s <- 0 + 2*p
+    return(q_s)}
+```
+
+
+打造一個國際時間轉換機器人叫what_time_it_is，使用方式如：
+what_time_it_is("Europe/Paris")
+它會依照你電腦目前時間, 即輸入now()得到的時間，去告訴你現在巴黎幾點。
+```{r}
+library(lubridate)
+what_time_it_is <-
+  function(t){
+    what_time = with_tz(now(), tz="Europe/Paris")
+    return(what_time)
+  }
+what_time_it_is("Europe/Paris")
+```
+
+
+以下程式會回傳916公車目前到站預估時間estimatedArrivalTime_916及它的路線route_916（兩者皆設定回傳30筆資料為上限）：
+```{r}
+library(httr)
+library(magrittr)
+GET("https://ptx.transportdata.tw/MOTC/v2/Bus/EstimatedTimeOfArrival/City/NewTaipei/916?$top=30&$format=JSON") %>%
+  content -> estimatedArrivalTime_916
+
+GET("https://ptx.transportdata.tw/MOTC/v2/Bus/Route/City/NewTaipei/939?$top=30&$format=JSON") %>%
+  content -> route_916
+```
+打造公車到站預報機器人when_busArrives：
+```{r}
+
+when_busArrives("916","臺北大學正門")
+when_busArrives("939","學勤路")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -272,7 +272,7 @@ myDemand2 <- function(p, intercept=10, slope=-5){
 
 ```{r}
 environment(myDemand2)
-findGlobals(myDemand2) # 不依靠global env裡的intercept/slope
+codetools::findGlobals(myDemand2) # 不依靠global env裡的intercept/slope
 ```
 
 
