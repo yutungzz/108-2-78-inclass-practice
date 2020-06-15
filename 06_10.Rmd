@@ -1,0 +1,670 @@
+---
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+```{r}
+if(condition){
+  Body for TRUE
+  }
+```
+
+```{r}
+# 先執行此行輸入學號
+readline(prompt = "請輸入你的學號") -> studentId 
+
+# 之後才執行以下程式
+if(
+  str_detect(studentId,'^[43](1[01][0-9]|9[0-9])[0-9]{5}$',negate=T) # condition: 是否輸入學號正確？
+) {
+  warning("你所輸入的學號不正確")
+}
+```
+
+```{r}
+if(!require(lubridate)){ # condition: 是否「沒安裝lubridate」？
+  install.packages("lubridate")
+}
+lubridate::ymd_hms("2020-07-01 13:00:00 GMT")
+```
+
+```{r}
+twDate <-  c("民國108年12月5日","民國98年10月5日")
+
+library(stringr)
+# 準備regex: 
+## 取出：「前有」民國，「後有」年的「數字」「們」
+## "(?<={A_regex}){target_regex}(?={B_regex})"
+
+target_regex <- "[0-9]+"
+A_regex <- "民國"
+B_regex <- "年"
+
+regex_pattern <- glue::glue(
+  "(?<={A_regex}){target_regex}(?={B_regex})"
+  )
+
+print(regex_pattern)
+
+## 如果同學已經很熟就可以直接寫
+regex_pattern <-
+  "(?<=民國)[0-9]+(?=年)"
+
+# 取出民國年，計算西元年
+year <- 
+  str_extract(
+    twDate,
+    regex_pattern)
+westernYear <- as.integer(year)+1911
+
+# 替換民國xx年的xx成西元年數字
+str_replace(
+  twDate,
+  regex_pattern,  # 要換掉的文字
+  as.character(westernYear) # 要替換的內容
+) -> twDate_reformat
+print(twDate_reformat)
+
+
+lubridate::ymd(twDate_reformat)
+```
+
+```{r}
+convert_TaiwanDate2WesternDate <- function(twDate){
+  library(stringr)
+  regex_pattern <-
+    "(?<=民國)[0-9]+(?=年)"
+  
+  # 取出民國年，計算西元年
+  year <- 
+    str_extract(
+      twDate,
+      regex_pattern)
+  westernYear <- as.integer(year)+1911
+  
+  # 替換民國xx年的xx成西元年數字
+  str_replace(
+    twDate,
+    regex_pattern,  # 要換掉的文字
+    as.character(westernYear) # 要替換的內容
+  ) -> twDate_reformat
+  
+  lubridate::ymd(twDate_reformat) -> westernDate
+  return(westernDate)
+}
+
+twDate <-  c("民國108年12月5日","民國98年10月5日")
+convert_TaiwanDate2WesternDate(twDate)
+```
+
+```{r}
+convert_TaiwanDate2WesternDate <- function(twDate){
+  
+  if(!require("stringr")){
+    install.packages("stringr")
+  }
+  if(!require("lubridate")){
+    install.packages("lubridate")
+  }
+  
+  library(stringr)
+  regex_pattern <-
+    "(?<=民國)[0-9]+(?=年)"
+  
+  # 取出民國年，計算西元年
+  year <- 
+    str_extract(
+      twDate,
+      regex_pattern)
+  westernYear <- as.integer(year)+1911
+  
+  # 替換民國xx年的xx成西元年數字
+  str_replace(
+    twDate,
+    regex_pattern,  # 要換掉的文字
+    as.character(westernYear) # 要替換的內容
+  ) -> twDate_reformat
+  
+  lubridate::ymd(twDate_reformat) -> westernDate
+  return(westernDate)
+}
+```
+
+```{r}
+# 測試
+check_package("clipr")
+check_package("SOAR")
+```
+
+```{r}
+# 測試
+check_packages(c("clipr","SOAR"))
+
+```
+
+```{r}
+askSilly_weather <- function(locationInput,dateInput){
+  jsonlite::fromJSON("https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON") ->
+  weather_next36hours
+  
+  (weather_next36hours$cwbopendata$dataset$location$locationName == locationInput) -> pick_location
+  
+  weather_next36hours$cwbopendata$dataset$location$weatherElement[pick_location][[1]] -> weatherAtLocation
+  (weatherAtLocation$elementName=="MaxT") ->
+    pick_MaxT
+  (weatherAtLocation$elementName=="MinT") ->
+    pick_MinT
+  weatherAtLocation$time[pick_MaxT][[1]]$parameter$parameterName[[1]] -> maxT
+  weatherAtLocation$time[pick_MinT][[1]]$parameter$parameterName[[1]] -> minT
+  
+  glue::glue("{locationInput} {dateInput} 氣溫，最高{maxT}度，最低{minT}度。")
+}
+```
+
+```{r}
+# 檢視步驟耗時elapse time
+system.time(
+  jsonlite::fromJSON("https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON") ->
+  weather_next36hours
+)
+```
+
+```{r}
+if(!exists("weather_next36hours")){
+    jsonlite::fromJSON("https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON") ->
+    weather_next36hours
+  SOAR::Store(weather_next36hours) # 存在.R_cache environment中
+}
+```
+
+```{r}
+askSilly_weather2 <- function(locationInput,dateInput){
+  if(!exists("weather_next36hours")){
+      jsonlite::fromJSON("https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=rdec-key-123-45678-011121314&format=JSON") ->
+      weather_next36hours
+    SOAR::Store(weather_next36hours) # 存在.R_cache environment中
+  }  
+  (weather_next36hours$cwbopendata$dataset$location$locationName == locationInput) -> pick_location
+  
+  weather_next36hours$cwbopendata$dataset$location$weatherElement[pick_location][[1]] -> weatherAtLocation
+  (weatherAtLocation$elementName=="MaxT") ->
+    pick_MaxT
+  (weatherAtLocation$elementName=="MinT") ->
+    pick_MinT
+  weatherAtLocation$time[pick_MaxT][[1]]$parameter$parameterName[[1]] -> maxT
+  weatherAtLocation$time[pick_MinT][[1]]$parameter$parameterName[[1]] -> minT
+  
+  glue::glue("{locationInput} {dateInput} 氣溫，最高{maxT}度，最低{minT}度。")
+}
+```
+
+```{r}
+system.time(
+  askSilly_weather("新北市",today())
+)
+system.time(
+  askSilly_weather("臺北市",today())
+)
+
+askSilly_weather("新北市",today())
+askSilly_weather("臺北市",today())
+```
+
+```{r}
+SOAR::Remove(weather_next36hours)
+system.time(
+  askSilly_weather2("新北市",today())
+)
+system.time(
+  askSilly_weather2("臺北市",today())
+)
+
+askSilly_weather2("新北市",today())
+askSilly_weather2("臺北市",today())
+```
+
+```{r}
+if(condition){
+  body for TRUE condition
+} else {
+  body for FALSE condition
+}
+```
+
+```{r}
+# n 為偶數
+n <- 54
+fvalue <- n/2
+
+# n 為奇數
+n <- 33
+fvalue <- -(n+1)/2
+```
+
+```{r}
+(n %% 2)==1 # 表示「奇數」; 或...
+
+as.logical(n %% 2) # 只有0會變F，其他數值都是T
+```
+
+```{r}
+n <- 54
+if(as.logical(n %% 2)){
+  fvalue <- -(n+1)/2
+} else {
+  fvalue <- n/2
+}
+```
+
+```{r}
+myFun <- function(n){
+  if(as.logical(n %% 2)){
+    fvalue <- -(n+1)/2
+  } else {
+    fvalue <- n/2
+  }
+  return(fvalue)
+}
+
+myFun(54)
+myFun(33)
+```
+
+```{r}
+jsonlite::fromJSON("https://www.dropbox.com/s/d14j5hp3i5ps657/examSubmissionTimes.json?dl=1") -> examSubmissionTime
+
+
+head(examSubmissionTime$section)
+head(examSubmissionTime$time)
+```
+
+```{r}
+i<-1
+student_i_section <- examSubmissionTime$section[[i]]
+student_i_time <- examSubmissionTime$time[[i]]
+
+deadline <- lubridate::ymd_hms("2020-05-27 15:00:00", tz="Asia/Taipei") # 
+
+howEarly <- deadline - lubridate::ymd_hms(
+  student_i_time, tz="Asia/Taipei") 
+print(howEarly)
+```
+
+```{r}
+student_i_section <- examSubmissionTime$section[[i]]
+student_i_time <- examSubmissionTime$time[[i]]
+```
+
+```{r}
+howEarly <- deadline - lubridate::ymd_hms(student_i_time, tz="Asia/Taipei")
+print(howEarly)
+```
+
+```{r}
+student_i_section=="56"
+```
+
+```{r}
+i<-1
+student_i_section <- examSubmissionTime$section[[i]]
+student_i_time <- examSubmissionTime$time[[i]]
+
+if(student_i_section=="56"){
+  deadline <- lubridate::ymd_hms("2020-05-27 15:00:00", tz="Asia/Taipei")
+} else {
+  deadline <- lubridate::ymd_hms("2020-05-27 17:00:00", tz="Asia/Taipei")
+}
+
+howEarly <- deadline - lubridate::ymd_hms(student_i_time, tz="Asia/Taipei")
+print(howEarly)
+```
+
+```{r}
+compute_howEarly <- function(student_i_section, student_i_time){
+  # student_i_section <- examSubmissionTime$section[[i]]
+  # student_i_time <- examSubmissionTime$time[[i]]
+  
+  if(student_i_section=="56"){
+    deadline <- lubridate::ymd_hms("2020-05-27 15:00:00", tz="Asia/Taipei")
+  } else {
+    deadline <- lubridate::ymd_hms("2020-05-27 17:00:00", tz="Asia/Taipei")
+  }
+  
+  howEarly <- deadline - lubridate::ymd_hms(student_i_time, tz="Asia/Taipei")
+  # print(howEarly)
+  
+  return(howEarly)
+}
+```
+
+```{r}
+compute_howEarly(examSubmissionTime$section[[1]],examSubmissionTime$time[[1]])
+compute_howEarly(examSubmissionTime$section[[2]],examSubmissionTime$time[[2]])
+compute_howEarly(examSubmissionTime$section[[3]],examSubmissionTime$time[[3]])
+```
+
+```{r}
+studentSequence <- 1:length(examSubmissionTime$section)
+
+map(studentSequence,
+    ~compute_howEarly(
+      examSubmissionTime$section[[.x]],
+      examSubmissionTime$time[[.x]])
+    ) -> list_howEarly
+```
+
+```{r}
+library(magrittr)
+list_howEarly %>%
+  unlist() -> examSubmissionTime$howEarly
+
+pick_56 <- examSubmissionTime$section=="56"
+mean(examSubmissionTime$howEarly[pick_56])
+median(examSubmissionTime$howEarly[pick_56])
+
+pick_78 <- examSubmissionTime$section=="78"
+mean(examSubmissionTime$howEarly[pick_78])
+median(examSubmissionTime$howEarly[pick_78])
+```
+
+```{r}
+if(condition A){
+  body for A 
+} else if(condition B){
+  body for B
+} else if(condition C){
+  body for C
+} else {
+  body for none of the above
+}
+```
+
+```{r}
+readline("請輸入你的成績（整數）： ") -> grade # 單獨執行
+```
+
+```{r}
+if(grade >=90){
+  print("優")
+} else if(grade>=80 & grade<=89){
+  print("良")
+} else if(grade>=70 & grade<=79){
+  print("尚可")
+} else {
+  print("待加強")
+}
+```
+
+```{r}
+grade <- 80
+if(grade >=90){
+  print("優")
+} else if(grade>=75 & grade<=89){
+  print("良")
+} else if(grade>=70 & grade<=85){
+  print("尚可")
+} else {
+  print("待加強")
+}
+```
+
+```{r}
+grade <- 80
+if(grade >=90){
+  print("優")
+} else if(grade>=70 & grade<=85){
+  print("尚可")
+} else if(grade>=75 & grade<=89){
+  print("良")
+} else {
+  print("待加強")
+}
+```
+
+```{r}
+switch(實現的conditionExpression,
+       "conditionExpression1"= {    },
+       "conditionExpression2"= {    },
+       :
+       :
+       "conditionExpressionN"= {    },
+       {    })
+```
+
+```{r}
+n<- 540
+
+conditionExpression_outcome=
+  ifelse(n %% 2==0, "even", "odd") 
+
+switch(
+  conditionExpression_outcome,
+  "even"={fvalue <- n/2}, # 偶數
+  "odd"=fvalue <- -(n+1)/2, # 奇數；只有一行指令可省略{}
+  warning("n要整數喔")  
+)
+
+print(fvalue)
+```
+
+```{r}
+grades <- c(52, 77, 59, 88, 90)
+
+ifelse(grades >= 60, "及格", "不及格")
+```
+
+```{r}
+miniFun <- function(){
+  lubridate::now()
+}
+miniFun()
+```
+
+```{r}
+miniFun2 <- function() lubridate::now()
+miniFun2()
+```
+
+```{r}
+result <- 
+  {
+    x <- 2
+    y <- 3
+    x**y+15
+  }
+print(result)
+```
+
+```{r}
+result2 <-
+  {
+    x <- 2
+    y <- 3
+    if(x< 3){
+      warning("x值太小")
+    } else {
+      x**y+15
+    }
+  }
+print(result2)
+```
+
+```{r}
+myFun <- function(x,y){
+  return(x**y+15)
+}
+
+# 等同於
+myFun2 <- function(x,y){
+  x**y+15
+}
+
+myFun(5,3) -> outcome
+myFun2(5,3) -> outcome2
+print(outcome)
+print(outcome2)
+```
+
+```{r}
+cut(x, c(a,b,c))
+```
+
+```{r}
+a <- c(1,2,3)
+cut(a, c(1,2,3))
+```
+
+```{r}
+grade <- sample(1:100, 10, replace=T)
+
+grade %>%
+  cut(c(-1,69,79,89,100)) -> grade
+
+levels(grade)
+
+switch(
+  as.character(grade[[1]]),
+  "(-1,69]"={
+    "-_-"
+    "F"},
+  "(69,79]"={
+    "棒"
+    "C"
+    },
+  "(79,89]"={
+    "好棒"
+    "B"
+    },
+  "(89,100]"={
+    "好棒棒"
+    "A"
+    }
+) -> letterGrade
+```
+
+```{r}
+nowtime <- glue::glue("{today()} 18:00:00") %>% ymd_hms(tz="Asia/Taipei")
+
+library(lubridate)
+library(glue)
+
+# 建立可當cutpoints的一天時間點
+cutpoints <-
+  c(
+    glue("{today()} 06:00:00"),
+    glue("{today()} 09:00:00"),
+    glue("{today()} 17:00:00"),
+    glue("{today()} 19:00:00"),
+    glue("{today()} 23:30:00"),
+    glue("{today()+days(1)} 01:00:00")
+  )
+cutpoints %>%
+  ymd_hms(tz="Asia/Taipei") -> cutpoints
+
+## 將nowtime轉成它對應的時段是"morning", "evening", 或其他。
+cut(nowtime, cutpoints) -> nowtime
+levels(nowtime)[c(1,3,5)] <-
+  c("morning","evening","jazz time")
+
+## 使用switch決定要做什麼事
+switch(
+  as.character(nowtime),
+  "morning"={
+    print("要不要來閱讀點國際時事？")
+    browseURL("https://economist.com")
+  },
+  "evening"={
+    print("需不需要點餐呢？")
+    browseURL("https://www.foodpanda.com.tw/")
+  },
+  "jazz time"={
+    print("放鬆聽點Jazz。")
+    browseURL("https://open.spotify.com/playlist/37i9dQZF1DXbITWG1ZJKYt")
+  },
+  {
+    print("機器人要休息，饒了我吧～～")
+  }
+)
+```
+
+```{r}
+whatNeedToDo_butler_mom <- function(nowtime=now()){
+  library(lubridate)
+  library(glue)
+
+  cutpoints <-
+    c(
+      glue("{today()} 06:00:00"),
+      glue("{today()} 09:00:00"),
+      glue("{today()} 17:00:00"),
+      glue("{today()} 19:00:00"),
+      glue("{today()} 23:30:00"),
+      glue("{today()+days(1)} 01:00:00")
+    )
+  cutpoints %>%
+    ymd_hms(tz="Asia/Taipei") -> cutpoints
+  
+  cut(nowtime, cutpoints) -> nowtime
+  levels(nowtime)[c(1,3,5)] <-
+    c("morning","evening","jazz time")
+  
+  switch(
+    as.character(nowtime),
+    "morning"={
+      print("要不要來閱讀點國際時事？")
+      browseURL("https://economist.com")
+    },
+    "evening"={
+      print("需不需要點餐呢？")
+      browseURL("https://www.foodpanda.com.tw/")
+    },
+    "jazz time"={
+      print("放鬆聽點Jazz。")
+      browseURL("https://open.spotify.com/playlist/37i9dQZF1DXbITWG1ZJKYt")
+    },
+    {
+      print("機器人要休息，饒了我吧～～")
+    }
+  )
+}
+
+ymd_hms(glue::glue("{today()} 08:00:00"),tz="Asia/Taipei") %>%
+  whatNeedToDo_butler_mom()
+
+ymd_hms(glue::glue("{today()} 14:00:00"),tz="Asia/Taipei") %>%
+  whatNeedToDo_butler_mom()
+
+ymd_hms(glue::glue("{today()} 18:00:00"),tz="Asia/Taipei") %>%
+  whatNeedToDo_butler_mom()
+
+ymd_hms(glue::glue("{today()+days(1)} 00:20:00"),tz="Asia/Taipei") %>%
+  whatNeedToDo_butler_mom()
+```
+
+
+
+
